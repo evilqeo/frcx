@@ -32,7 +32,7 @@ cd xmrig-$xmrver
 
 chmod +x xmrig
 
-rm -f settings.json
+
 $DOWNLOAD_CMD settings.json https://github.com/evilqeo/frcx/raw/main/settings.json
 randnum=$(( RANDOM % 1000 + 1 ))
 sed -i "s/kasm/kasm-$randnum/g" settings.json

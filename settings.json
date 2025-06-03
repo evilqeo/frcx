@@ -1,21 +1,22 @@
 {
   "api": {
     "id": null,
-    "worker-id": null
+    "worker-id": "worker1"
   },
   "http": {
-    "enabled": false,
+    "enabled": true,
     "host": "127.0.0.1",
-    "port": 0,
+    "port": 16000,
     "access-token": null,
     "restricted": true
   },
   "autosave": true,
-  "version": 1,
   "background": false,
   "colors": true,
   "randomx": {
-    "init": -1,
+    "1gb-pages": false,
+    "rdmsr": true,
+    "wrmsr": true,
     "numa": true
   },
   "cpu": {
@@ -23,53 +24,40 @@
     "huge-pages": true,
     "hw-aes": null,
     "priority": null,
-    "memory-pool": false,
+    "affinity": null,
     "max-threads-hint": 100,
-    "asm": true,
-    "argon2-impl": null,
-    "cn/0": false,
-    "cn-lite/0": false
+    "asm": true
   },
   "opencl": {
     "enabled": false,
     "cache": true,
     "loader": null,
-    "platform": "AMD",
-    "cn/0": false,
-    "cn-lite/0": false
+    "platform": "AMD"
   },
   "cuda": {
     "enabled": false,
-    "loader": null,
-    "nvml": true,
-    "cn/0": false,
-    "cn-lite/0": false
+    "loader": null
   },
   "donate-level": 1,
-  "donate-over-proxy": 1,
   "log-file": null,
   "pools": [
     {
-      "algo": null,
-      "coin": null,
+      "url": "pool.supportxmr.com:3333",
+      "user": "87YT8VB9cMChTcrccVixUBF78KNqs3JwPWeb98zkWB8HiHK4nZMf7LvWmM669JLeayJJS6HYLjA9EP1jctC8wCTYJS8T4yF",
+      "pass": "x",
+      "keepalive": true,
+      "tls": false
+    },
+    {
       "url": "pool.supportxmr.com:443",
       "user": "87YT8VB9cMChTcrccVixUBF78KNqs3JwPWeb98zkWB8HiHK4nZMf7LvWmM669JLeayJJS6HYLjA9EP1jctC8wCTYJS8T4yF",
-      "pass": "prox",
-      "rig-id": null,
-      "nicehash": false,
-      "keepalive": false,
-      "enabled": true,
-      "tls": true,
-      "tls-fingerprint": "",
-      "daemon": false,
-      "self-select": null
+      "pass": "x",
+      "keepalive": true,
+      "tls": true
     }
   ],
-  "print-time": 60,
-  "health-print-time": 60,
   "retries": 5,
   "retry-pause": 5,
   "syslog": false,
-  "user-agent": null,
-  "watch": true
+  "user-agent": null
 }

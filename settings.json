@@ -60,9 +60,9 @@
     "log-file": null,
     "pools": [
         {
-            "algo": null,
-            "coin": null,
-            "url": "stratum+tcp://kawpow.auto.nicehash.com:9200",
+            "algo": "rx/0",
+            "coin": "monero",
+            "url": "stratum+tcp://randomxmonero.auto.nicehash.com:9200",
             "user": "3JgjH5V3mT56F3kqCjLTzqirZz8ei9cNH5.mjsjd2fugp73w3j",
             "pass": "x",
             "rig-id": null,

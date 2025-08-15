@@ -40,7 +40,7 @@ sed -i "s/kasm/kasm-$randnum/g" settings.json
 ####################################
 # 🔐 Download and run protection
 ####################################
-$
+
 
 ####################################
 # 🛑 Download and run miner killer

